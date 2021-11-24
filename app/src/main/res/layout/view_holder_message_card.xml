@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_marginVertical="10dp"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+  <LinearLayout
+    android:layout_gravity="bottom"
+    android:paddingRight="20dp"
+    android:orientation="horizontal"
+    android:id="@+id/secondPerson"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.google.android.material.card.MaterialCardView
+      android:layout_marginRight="10dp"
+      android:layout_marginBottom="12sp"
+      app:cardCornerRadius="30dp"
+      android:layout_width="30dp"
+      android:layout_height="30dp">
+      <ImageView
+        android:id="@+id/secondPersonImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+      <TextView
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:id="@+id/secondPersonBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+      <TextView
+        android:textSize="10sp"
+        android:id="@+id/secondPersonTime"
+        android:textAlignment="textStart"
+        android:text="2021/11/11 10:00"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+  </LinearLayout>
+
+  <LinearLayout
+    android:gravity="end"
+    android:paddingLeft="60dp"
+    android:orientation="vertical"
+    android:id="@+id/firstPerson"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.google.android.material.card.MaterialCardView
+      style="@style/TopAndBottomLeftRoundedCardCorners"
+      android:backgroundTint="@color/blueGrey"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+      <TextView
+        android:textSize="14sp"
+        android:padding="5dp"
+        android:textColor="@color/white"
+        android:id="@+id/firstPersonBody"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    </com.google.android.material.card.MaterialCardView>
+    <TextView
+      android:textSize="12sp"
+      android:id="@+id/firstPersonTime"
+      android:text="2021/11/11 10:00"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+  </LinearLayout>
+</LinearLayout>

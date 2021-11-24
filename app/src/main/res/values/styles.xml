@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="TopRoundedCardCorners" parent="@style/Widget.MaterialComponents.CardView">
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearance_top_rounded_corners</item>
+  </style>
+
+  <style name="BottomRoundedCardCorners" parent="@style/Widget.MaterialComponents.CardView">
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearance_bottom_rounded_corners</item>
+  </style>
+
+  <style name="TopAndBottomLeftRoundedCardCorners" parent="@style/Widget.MaterialComponents.CardView">
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearance_top_and_bottom_left_rounded_corners</item>
+  </style>
+
+  <style name="ShapeAppearance_top_rounded_corners" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSizeTopLeft">15dp</item>
+    <item name="cornerSizeTopRight">15dp</item>
+  </style>
+
+  <style name="ShapeAppearance_bottom_rounded_corners" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSizeBottomLeft">15dp</item>
+    <item name="cornerSizeBottomRight">15dp</item>
+  </style>
+
+  <style name="ShapeAppearance_top_and_bottom_left_rounded_corners" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSizeTopLeft">15dp</item>
+    <item name="cornerSizeTopRight">15dp</item>
+    <item name="cornerSizeBottomLeft">15dp</item>
+  </style>
+</resources>

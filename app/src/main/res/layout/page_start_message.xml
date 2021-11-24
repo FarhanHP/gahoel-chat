@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+  <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/blueGrey"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".pages.after_login.start_message.StartMessagePage">
+    <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <com.farhanhp.gahoelchat.components.SecondaryAppbar
+        android:id="@+id/appbar"
+        app:title="Start a Message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_weight="1"
+        android:layout_marginHorizontal="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <com.farhanhp.gahoelchat.components.TextField
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintLeft_toLeftOf="parent"
+          android:id="@+id/emailInput"
+          android:layout_marginTop="20dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+
+        <com.farhanhp.gahoelchat.components.TextField
+          app:layout_constraintTop_toBottomOf="@id/emailInput"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintBottom_toTopOf="@id/sendMessageButton"
+          android:id="@+id/bodyInput"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"/>
+
+        <com.google.android.material.button.MaterialButton
+          android:layout_marginBottom="10dp"
+          android:backgroundTint="@color/blueGrey2"
+          app:iconGravity="end"
+          app:icon="@drawable/ic_baseline_send_24"
+          app:cornerRadius="10dp"
+          android:padding="5dp"
+          android:id="@+id/sendMessageButton"
+          android:text="@string/send_message"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintLeft_toLeftOf="parent"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+  </FrameLayout>
+</layout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/after_login_navigation"
+  app:startDestination="@id/homePage">
+
+  <fragment
+    android:id="@+id/homePage"
+    android:name="com.farhanhp.gahoelchat.pages.after_login.home.HomePage"
+    android:label="HomePage" >
+    <action
+      android:id="@+id/action_homePage_to_chatRoomPage"
+      app:destination="@id/chatRoomPage" />
+    <action
+      android:id="@+id/action_homePage_to_startMessagePage"
+      app:destination="@id/startMessagePage" />
+    <action
+      android:id="@+id/action_homePage_to_settingPage"
+      app:destination="@id/settingPage" />
+  </fragment>
+  <fragment
+    android:id="@+id/chatRoomPage"
+    android:name="com.farhanhp.gahoelchat.pages.after_login.chat_room.ChatRoomPage"
+    android:label="ChatRoomPage" />
+  <fragment
+    android:id="@+id/startMessagePage"
+    android:name="com.farhanhp.gahoelchat.pages.after_login.start_message.StartMessagePage"
+    android:label="StartMessagePage" >
+    <action
+      android:id="@+id/action_startMessagePage_to_chatRoomPage"
+      app:destination="@id/chatRoomPage"
+      app:popUpTo="@id/startMessagePage"
+      app:popUpToInclusive="true" />
+  </fragment>
+  <fragment
+    android:id="@+id/settingPage"
+    android:name="com.farhanhp.gahoelchat.pages.after_login.setting.SettingPage"
+    android:label="SettingPage" />
+</navigation>
