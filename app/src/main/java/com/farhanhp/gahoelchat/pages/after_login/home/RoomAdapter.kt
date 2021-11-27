@@ -53,8 +53,10 @@ class RoomAdapter: RecyclerView.Adapter<RoomAdapter.ViewHolder>() {
     val imageView = holder.profilePhoto
     Glide.with(imageView.context).load(imageUri).into(imageView)
     holder.nameTextView.text = item.roomName
-    holder.lastMessageTextView.text = item.messages[0].messageBody
-    holder.timeTextView.text = toDateString(Date(item.messages[0].createdAt))
+    if(item.messages.isNotEmpty()) {
+      holder.lastMessageTextView.text = item.messages[0].messageBody
+      holder.timeTextView.text = toDateString(Date(item.messages[0].createdAt))
+    }
   }
 
   override fun getItemCount() = data.size
