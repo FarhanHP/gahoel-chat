@@ -3,8 +3,8 @@ package com.farhanhp.gahoelchat.pages.register
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.farhanhp.gahoelchat.api.GahoelChatApiService
-import com.farhanhp.gahoelchat.api.RegisterResponse
+import com.farhanhp.gahoelchat.services.GahoelChatApiService
+import com.farhanhp.gahoelchat.classes.RegisterResponse
 import com.farhanhp.gahoelchat.isValidEmail
 import retrofit2.Response
 

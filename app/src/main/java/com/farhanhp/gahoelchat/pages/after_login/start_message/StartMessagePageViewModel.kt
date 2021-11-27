@@ -3,9 +3,9 @@ package com.farhanhp.gahoelchat.pages.after_login.start_message
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.farhanhp.gahoelchat.api.CreateNewMessageResponse
-import com.farhanhp.gahoelchat.api.GahoelChatApiService
-import com.farhanhp.gahoelchat.api.Room
+import com.farhanhp.gahoelchat.classes.CreateNewMessageResponse
+import com.farhanhp.gahoelchat.services.GahoelChatApiService
+import com.farhanhp.gahoelchat.classes.Room
 import com.farhanhp.gahoelchat.isValidEmail
 import retrofit2.Response
 
@@ -38,8 +38,9 @@ class StartMessagePageViewModel(
           if(body != null) {
             successCallback(body.content)
           }
-        }
-        else -> {
+        } 401 -> {
+          setEmailError("Cannot send message to yourself")
+        } else -> {
           setEmailError("Email doesn't exist")
         }
       }

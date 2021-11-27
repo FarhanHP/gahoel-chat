@@ -13,7 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.farhanhp.gahoelchat.*
-import com.farhanhp.gahoelchat.api.Room
+import com.farhanhp.gahoelchat.classes.Room
+import com.farhanhp.gahoelchat.classes.User
 import com.farhanhp.gahoelchat.components.PrimaryAppbar
 import com.farhanhp.gahoelchat.databinding.PageHomeBinding
 import com.farhanhp.gahoelchat.pages.after_login.AfterLoginPage
@@ -37,7 +38,7 @@ class HomePage : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     binding = DataBindingUtil.inflate(inflater, R.layout.page_home, container, false)
     afterLoginPageParent = parentFragment?.parentFragment as AfterLoginPage
     setViewModels()
@@ -75,6 +76,7 @@ class HomePage : Fragment() {
           roomList.visibility = View.GONE
           chatsDescription.text = "No Chats :("
         } else {
+          notificationClickHandler()
           adapter.data = it
           chatsDescription.visibility = View.GONE
           roomList.visibility = View.VISIBLE
@@ -88,12 +90,12 @@ class HomePage : Fragment() {
   private fun setViewModels() {
     mainActivityViewModelFactory = MainActivityViewModelFactory(requireActivity() as MainActivity)
     mainActivityViewModel = ViewModelProvider(requireActivity(), mainActivityViewModelFactory).get(MainActivityViewModel::class.java)
-    afterLoginPageViewModelFactory = AfterLoginPageViewModelFactory(mainActivityViewModel.loginToken as String, {}, {fetchRoomsFailCallback()})
-    afterLoginPageViewModel = ViewModelProvider(afterLoginPageParent, afterLoginPageViewModelFactory).get(AfterLoginPageViewModel::class.java)
-  }
 
-  private fun fetchRoomsFailCallback() {
-    Toast.makeText(context, "Fail to fetch chats, try again later :(", Toast.LENGTH_LONG).show()
+    val loginToken = mainActivityViewModel.loginToken as String
+    val loginUser = mainActivityViewModel.loginUser as User
+
+    afterLoginPageViewModelFactory = AfterLoginPageViewModelFactory(loginUser, loginToken, {}, {})
+    afterLoginPageViewModel = ViewModelProvider(afterLoginPageParent, afterLoginPageViewModelFactory).get(AfterLoginPageViewModel::class.java)
   }
 
   private fun redirectToSettingPage() {
@@ -107,5 +109,25 @@ class HomePage : Fragment() {
   private fun redirectToChatRoomPage(room: Room) {
     afterLoginPageViewModel.selectedRoom = room
     findNavController().navigate(HomePageDirections.actionHomePageToChatRoomPage())
+  }
+
+  private fun notificationClickHandler() {
+    val intent = activity?.intent
+
+    if(intent != null) {
+      val type = intent.getStringExtra("type")
+
+      if(type != null) {
+        val roomId = intent.getStringExtra(when(type){
+          "message" -> "roomId"
+          else ->  "_id"
+        }) as String
+
+        val room = afterLoginPageViewModel.getRoomById(roomId)
+        if(room != null) {
+          redirectToChatRoomPage(room)
+        }
+      }
+    }
   }
 }
