@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.farhanhp.gahoelchat.DEFAULT_PP
 import com.farhanhp.gahoelchat.R
-import com.farhanhp.gahoelchat.api.Room
+import com.farhanhp.gahoelchat.classes.Room
 import com.farhanhp.gahoelchat.toDateString
 import java.util.*
 

@@ -11,9 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.farhanhp.gahoelchat.*
-import com.farhanhp.gahoelchat.api.Message
-import com.farhanhp.gahoelchat.api.Room
+import com.farhanhp.gahoelchat.classes.Message
+import com.farhanhp.gahoelchat.classes.Room
 import com.farhanhp.gahoelchat.classes.SecondaryPage
+import com.farhanhp.gahoelchat.classes.User
 import com.farhanhp.gahoelchat.components.ChatRoomAppbar
 import com.farhanhp.gahoelchat.databinding.PageChatRoomBinding
 import com.farhanhp.gahoelchat.pages.after_login.AfterLoginPage
@@ -43,6 +44,13 @@ class ChatRoomPage : SecondaryPage() {
     binding = DataBindingUtil.inflate(inflater, R.layout.page_chat_room, container, false)
     afterLoginPageParent = parentFragment?.parentFragment as AfterLoginPage
     setModels()
+
+    mainActivityViewModel.addOnPassNewMessageFromFCMListener { roomId, senderUserId, messageId, messageBody, createdAt ->
+      if(afterLoginPageViewModel.selectedRoom?._id == roomId) {
+        chatRoomPageViewModel.insertMessageByFCM(senderUserId, messageId, messageBody, createdAt)
+      }
+    }
+
     setComponents()
     setStates()
 
@@ -54,11 +62,12 @@ class ChatRoomPage : SecondaryPage() {
     mainActivityViewModel = ViewModelProvider(requireActivity(), mainActivityViewModelFactory).get(MainActivityViewModel::class.java)
 
     val loginToken = mainActivityViewModel.loginToken as String
+    val loginUser = mainActivityViewModel.loginUser as User
 
-    afterLoginPageViewModelFactory = AfterLoginPageViewModelFactory(loginToken, {}, {})
+    afterLoginPageViewModelFactory = AfterLoginPageViewModelFactory(loginUser, loginToken, {}, {})
     afterLoginPageViewModel = ViewModelProvider(afterLoginPageParent, afterLoginPageViewModelFactory).get(AfterLoginPageViewModel::class.java)
 
-    chatRoomPageViewModelFactory = ChatRoomPageViewModelFactory(loginToken, afterLoginPageViewModel.selectedRoom as Room)
+    chatRoomPageViewModelFactory = ChatRoomPageViewModelFactory(loginUser, loginToken, afterLoginPageViewModel.selectedRoom as Room)
     chatRoomPageViewModel = ViewModelProvider(this, chatRoomPageViewModelFactory).get(ChatRoomPageViewModel::class.java)
   }
 
@@ -73,9 +82,6 @@ class ChatRoomPage : SecondaryPage() {
     appbar = binding.appbar
     appbar.setBackButtonClickListener { openPriorPage() }
     messageList = binding.messageList
-    val layoutManager = LinearLayoutManager(context)
-    layoutManager.reverseLayout = true;
-    messageList.layoutManager = layoutManager
     adapter = MessageCardAdapter(afterLoginPageViewModel.selectedRoom?.roomImage as String)
     messageList.adapter = adapter
     val selectedRoom = afterLoginPageViewModel.selectedRoom
@@ -95,18 +101,12 @@ class ChatRoomPage : SecondaryPage() {
   }
 
   private fun sendMessage() {
-    fun fail() {
-      Toast.makeText(context, "Fail to send message, try again later", Toast.LENGTH_SHORT).show()
-    }
-
-    fun success(message: Message) {
-      afterLoginPageViewModel.insertNewMessage((afterLoginPageViewModel.selectedRoom as Room)._id, message)
-    }
-
     val messageBody = messageInput.text.toString()
     if(messageBody.isNotBlank()) {
       messageInput.setText("")
-      chatRoomPageViewModel.createMessage(messageBody, {success(it)}, {fail()})
+      chatRoomPageViewModel.createMessage(messageBody) {
+        Toast.makeText(context, "Fail to send message, try again later", Toast.LENGTH_SHORT).show()
+      }
     }
   }
 }

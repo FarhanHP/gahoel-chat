@@ -36,6 +36,7 @@
       android:layout_height="wrap_content"/>
 
     <TextView
+      android:textColor="@android:color/tab_indicator_text"
       android:textSize="14sp"
       android:ellipsize="end"
       android:singleLine="true"
@@ -45,6 +46,7 @@
   </LinearLayout>
 
   <TextView
+    android:textColor="@android:color/tab_indicator_text"
     android:id="@+id/time"
     android:layout_marginLeft="5dp"
     android:layout_gravity="center_vertical"

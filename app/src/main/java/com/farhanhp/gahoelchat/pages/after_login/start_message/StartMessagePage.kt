@@ -13,8 +13,9 @@ import com.farhanhp.gahoelchat.MainActivity
 import com.farhanhp.gahoelchat.MainActivityViewModel
 import com.farhanhp.gahoelchat.MainActivityViewModelFactory
 import com.farhanhp.gahoelchat.R
-import com.farhanhp.gahoelchat.api.Room
+import com.farhanhp.gahoelchat.classes.Room
 import com.farhanhp.gahoelchat.classes.SecondaryPage
+import com.farhanhp.gahoelchat.classes.User
 import com.farhanhp.gahoelchat.components.SecondaryAppbar
 import com.farhanhp.gahoelchat.components.TextField
 import com.farhanhp.gahoelchat.databinding.PageStartMessageBinding
@@ -52,7 +53,11 @@ class StartMessagePage : SecondaryPage() {
     afterLoginPageParent = parentFragment?.parentFragment as AfterLoginPage
     mainActivityViewModelFactory = MainActivityViewModelFactory(requireActivity() as MainActivity)
     mainActivityViewModel = ViewModelProvider(requireActivity(), mainActivityViewModelFactory).get(MainActivityViewModel::class.java)
-    afterLoginPageViewModelFactory = AfterLoginPageViewModelFactory(mainActivityViewModel.loginToken as String, {}, {})
+
+    val loginToken = mainActivityViewModel.loginToken as String
+    val loginUser = mainActivityViewModel.loginUser as User
+
+    afterLoginPageViewModelFactory = AfterLoginPageViewModelFactory(loginUser, loginToken, {}, {})
     afterLoginPageViewModel = ViewModelProvider(afterLoginPageParent, afterLoginPageViewModelFactory).get(AfterLoginPageViewModel::class.java)
     startMessagePageViewModelFactory = StartMessagePageViewModelFactory(mainActivityViewModel.loginToken as String)
     startMessagePageViewModel = ViewModelProvider(this, startMessagePageViewModelFactory).get(StartMessagePageViewModel::class.java)

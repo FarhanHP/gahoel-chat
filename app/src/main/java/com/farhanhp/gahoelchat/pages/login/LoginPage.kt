@@ -14,7 +14,7 @@ import com.farhanhp.gahoelchat.MainActivity
 import com.farhanhp.gahoelchat.MainActivityViewModel
 import com.farhanhp.gahoelchat.MainActivityViewModelFactory
 import com.farhanhp.gahoelchat.R
-import com.farhanhp.gahoelchat.api.LoginResponse
+import com.farhanhp.gahoelchat.classes.LoginResponse
 import com.farhanhp.gahoelchat.components.TextField
 import com.farhanhp.gahoelchat.databinding.PageLoginBinding
 import com.google.android.material.button.MaterialButton

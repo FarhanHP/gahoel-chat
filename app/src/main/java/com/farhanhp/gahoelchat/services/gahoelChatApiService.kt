@@ -1,5 +1,6 @@
-package com.farhanhp.gahoelchat.api
+package com.farhanhp.gahoelchat.services
 
+import com.farhanhp.gahoelchat.classes.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
@@ -11,7 +12,9 @@ import retrofit2.http.*
 private const val BASE_URL = "https://gahoel-chat-api.herokuapp.com/api/"
 
 private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-private val retrofit = Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi)).baseUrl(BASE_URL).build()
+private val retrofit = Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi)).baseUrl(
+  BASE_URL
+).build()
 
 interface GahoelChatApi {
   @POST("user/login")
@@ -25,6 +28,9 @@ interface GahoelChatApi {
 
   @POST("after-login/message/create")
   fun createMessage(@Header("login_token") loginToken: String, @Body createMessageBody: CreateMessageBody): Call<CreateMessageResponse>
+
+  @POST("after-login/user/firebase-registration-token")
+  fun registerFirebaseRegistrationToken(@Header("login_token") loginToken: String): Call<RegisterFirebaseRegistrationTokenResponse>
 
   @GET("after-login/user/profile")
   fun getProfile(@Header("login_token") loginToken: String): Call<GetProfileResponse>
@@ -106,6 +112,16 @@ object GahoelChatApiService {
   ) {
     retrofitService.createMessage(loginToken, CreateMessageBody(roomId, messageBody)).enqueue(
       CallbackWrapper<CreateMessageResponse>({successCallback(it)}, {failureCallback()})
+    )
+  }
+
+  fun registerFirebaseRegistrationToken(
+    loginToken: String,
+    successCallback: (response: Response<RegisterFirebaseRegistrationTokenResponse>) -> Unit,
+    failureCallback: () -> Unit
+  ) {
+    retrofitService.registerFirebaseRegistrationToken(loginToken).enqueue(
+      CallbackWrapper<RegisterFirebaseRegistrationTokenResponse>({successCallback(it)}, {failureCallback()})
     )
   }
 

@@ -1,15 +1,18 @@
 package com.farhanhp.gahoelchat.pages.after_login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.farhanhp.gahoelchat.api.GahoelChatApiService
-import com.farhanhp.gahoelchat.api.GetRoomsResponse
-import com.farhanhp.gahoelchat.api.Message
-import com.farhanhp.gahoelchat.api.Room
+import com.farhanhp.gahoelchat.services.GahoelChatApiService
+import com.farhanhp.gahoelchat.classes.GetRoomsResponse
+import com.farhanhp.gahoelchat.classes.Message
+import com.farhanhp.gahoelchat.classes.Room
+import com.farhanhp.gahoelchat.classes.User
 import retrofit2.Response
 
 class AfterLoginPageViewModel(
+  private val loginUser: User,
   private val loginToken: String,
   private val fetchRoomsSuccessCallback: () -> Unit,
   private val fetchRoomsFailCallback: () -> Unit
@@ -52,6 +55,27 @@ class AfterLoginPageViewModel(
     GahoelChatApiService.getRooms(loginToken, {success(it)}, {fail()})
   }
 
+  fun insertNewRoom(senderUserName: String, senderUserId: String, senderImage: String, roomId: String, lastInteractAt: Long, createdAt: Long, updatedAt: Long, firstMessageBody: String, firstMessageId: String) {
+    insertNewRoom(
+      Room(
+        senderUserName,
+        senderImage,
+        roomId,
+        lastInteractAt,
+        createdAt,
+        updatedAt,
+        listOf(
+          Message(
+            firstMessageId,
+            firstMessageBody,
+            senderUserId == loginUser._id,
+            createdAt
+          )
+        )
+      )
+    )
+  }
+
   fun insertNewRoom(room: Room) {
     if(_rooms.value != null) {
       val newRooms = (_rooms.value as List).toMutableList()
@@ -72,7 +96,16 @@ class AfterLoginPageViewModel(
     }
   }
 
-  fun insertNewMessage(roomId: String, newMessage: Message) {
+  fun insertNewMessage(roomId: String, senderUserId: String, messageId: String, messageBody: String, createdAt: Long) {
+    insertNewMessage(roomId, Message(
+      messageId,
+      messageBody,
+      senderUserId == loginUser._id,
+      createdAt,
+    ))
+  }
+
+  private fun insertNewMessage(roomId: String, newMessage: Message) {
     val newRooms = mutableListOf<Room>()
     var selectedRoom: Room? = null
     _rooms.value?.forEach{
@@ -90,5 +123,18 @@ class AfterLoginPageViewModel(
       newRooms.add(0, selectedRoom as Room)
       _rooms.value = newRooms
     }
+  }
+
+  fun getRoomById(roomId: String): Room? {
+    val rooms = _rooms.value
+    if(rooms != null) {
+      for(room in rooms) {
+        if(room._id == roomId) {
+          return room
+        }
+      }
+    }
+
+    return null
   }
 }

@@ -1,10 +1,9 @@
-package com.farhanhp.gahoelchat.api
+package com.farhanhp.gahoelchat.classes
 
 import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.net.SocketTimeoutException
 
 class CallbackWrapper<T>(
   private val successCallback: (response: Response<T>)->Unit,
@@ -12,11 +11,6 @@ class CallbackWrapper<T>(
 ): Callback<T> {
   override fun onFailure(call: Call<T>, t: Throwable) {
     Log.e("retrofit", t.toString())
-
-    // heroku server usually off automatically after 30 minutes idle
-    if(t is SocketTimeoutException) {
-      // TODO add handler
-    }
 
     failureCallback()
   }

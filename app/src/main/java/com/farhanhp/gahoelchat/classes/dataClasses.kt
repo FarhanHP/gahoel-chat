@@ -1,4 +1,4 @@
-package com.farhanhp.gahoelchat.api
+package com.farhanhp.gahoelchat.classes
 
 data class LoginBody(
   val email: String,
@@ -46,6 +46,10 @@ data class GetProfileResponse(
   val content: User,
 )
 
+data class RegisterFirebaseRegistrationTokenResponse(
+  val message: String
+)
+
 data class LogoutResponse(
   val message: String
 )
@@ -86,6 +90,7 @@ data class Message(
 )
 
 data class User(
+  val _id: String,
   val email: String,
   val imageUrl: String,
   val name: String,

@@ -11,6 +11,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
       <com.google.android.material.card.MaterialCardView
+        android:backgroundTint="@color/white"
         style="@style/BottomRoundedCardCorners"
         android:layout_weight="1"
         android:layout_width="match_parent"
@@ -25,6 +26,8 @@
             android:layout_height="wrap_content"/>
 
           <androidx.recyclerview.widget.RecyclerView
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:reverseLayout="true"
             android:id="@+id/messageList"
             android:layout_weight="1"
             android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.farhanhp.gahoelchat.pages.after_login.chat_room
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.farhanhp.gahoelchat.DEFAULT_PP
 import com.farhanhp.gahoelchat.R
-import com.farhanhp.gahoelchat.api.Message
+import com.farhanhp.gahoelchat.classes.Message
 import com.farhanhp.gahoelchat.toDateString
 import java.util.*
 
