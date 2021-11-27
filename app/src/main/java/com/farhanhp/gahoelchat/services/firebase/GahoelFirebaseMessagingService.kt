@@ -16,7 +16,6 @@ class GahoelFirebaseMessagingService: FirebaseMessagingService() {
 
     if (data.isNotEmpty()) {
       val intent = Intent()
-      Log.i("1234567", data["type"] as String)
       (when(data["type"]){
         "message" -> MESSAGE_KEYS
         else -> ROOM_KEYS

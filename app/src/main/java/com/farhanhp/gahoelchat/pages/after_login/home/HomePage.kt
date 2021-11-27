@@ -76,6 +76,7 @@ class HomePage : Fragment() {
           roomList.visibility = View.GONE
           chatsDescription.text = "No Chats :("
         } else {
+          notificationClickHandler()
           adapter.data = it
           chatsDescription.visibility = View.GONE
           roomList.visibility = View.VISIBLE
