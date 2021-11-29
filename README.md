@@ -14,6 +14,13 @@ https://github.com/FarhanHP/gahoel-chat-api
 ![](https://github.com/FarhanHP/gahoel-chat/blob/main/documents/Screenshot%20from%202021-11-27%2022-17-11.png)
 ![](https://github.com/FarhanHP/gahoel-chat/blob/main/documents/Screenshot%20from%202021-11-27%2022-17-22.png)
 
+## Features
+
+- Send message to certain user
+- Login
+- Register
+- Logout
+
 ## DEMO
 
 Watch demo here: https://youtu.be/CtAKeiXgTI4
