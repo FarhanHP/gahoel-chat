@@ -7,12 +7,12 @@ import retrofit2.Response
 
 class CallbackWrapper<T>(
   private val successCallback: (response: Response<T>)->Unit,
-  private val failureCallback: ()->Unit
+  private val failureCallback: (t: Throwable)->Unit
 ): Callback<T> {
   override fun onFailure(call: Call<T>, t: Throwable) {
     Log.e("retrofit", t.toString())
 
-    failureCallback()
+    failureCallback(t)
   }
 
   override fun onResponse(call: Call<T>, response: Response<T>) {

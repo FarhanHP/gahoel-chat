@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.farhanhp.gahoelchat.services.GahoelChatApiService
 import com.farhanhp.gahoelchat.classes.User
+import kotlinx.coroutines.launch
 
 class MainActivityViewModel(
   private val activity: MainActivity
@@ -118,7 +120,9 @@ class MainActivityViewModel(
 
     if(loginToken != null) {
       _loggingOut.value = true
-      GahoelChatApiService.logout(loginToken as String, {success()}, {fail()})
+      viewModelScope.launch {
+        GahoelChatApiService.logout(loginToken as String, {success()}, {fail()})
+      }
     } else {
       success()
     }

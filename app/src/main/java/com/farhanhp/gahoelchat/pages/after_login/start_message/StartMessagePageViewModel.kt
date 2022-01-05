@@ -3,10 +3,12 @@ package com.farhanhp.gahoelchat.pages.after_login.start_message
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.farhanhp.gahoelchat.classes.CreateNewMessageResponse
 import com.farhanhp.gahoelchat.services.GahoelChatApiService
 import com.farhanhp.gahoelchat.classes.Room
 import com.farhanhp.gahoelchat.isValidEmail
+import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class StartMessagePageViewModel(
@@ -55,7 +57,9 @@ class StartMessagePageViewModel(
     val validEmail = isValidEmail(recipientEmail)
     if(recipientEmail.isNotBlank() && messageBody.isNotBlank() && validEmail){
       _loading.value = true
-      GahoelChatApiService.createNewMessage(loginToken, recipientEmail, messageBody, {success(it)}, {fail()})
+      viewModelScope.launch {
+        GahoelChatApiService.createNewMessage(loginToken, recipientEmail, messageBody, {success(it)}, {fail()})
+      }
     }
 
     if(recipientEmail.isBlank()) {

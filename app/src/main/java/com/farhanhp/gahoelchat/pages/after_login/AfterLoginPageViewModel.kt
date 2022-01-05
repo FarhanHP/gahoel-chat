@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.farhanhp.gahoelchat.services.GahoelChatApiService
 import com.farhanhp.gahoelchat.classes.GetRoomsResponse
 import com.farhanhp.gahoelchat.classes.Message
 import com.farhanhp.gahoelchat.classes.Room
 import com.farhanhp.gahoelchat.classes.User
+import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class AfterLoginPageViewModel(
@@ -52,7 +54,9 @@ class AfterLoginPageViewModel(
     }
 
     _fetchingRooms.value = true
-    GahoelChatApiService.getRooms(loginToken, {success(it)}, {fail()})
+    viewModelScope.launch {
+      GahoelChatApiService.getRooms(loginToken, {success(it)}, {fail()})
+    }
   }
 
   fun insertNewRoom(senderUserName: String, senderUserId: String, senderImage: String, roomId: String, lastInteractAt: Long, createdAt: Long, updatedAt: Long, firstMessageBody: String, firstMessageId: String) {

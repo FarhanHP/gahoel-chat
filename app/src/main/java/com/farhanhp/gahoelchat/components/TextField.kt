@@ -1,7 +1,6 @@
 package com.farhanhp.gahoelchat.components
 
 import android.content.Context
-import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout

@@ -3,9 +3,11 @@ package com.farhanhp.gahoelchat.pages.register
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.farhanhp.gahoelchat.services.GahoelChatApiService
 import com.farhanhp.gahoelchat.classes.RegisterResponse
 import com.farhanhp.gahoelchat.isValidEmail
+import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class RegisterPageViewModel(
@@ -71,7 +73,9 @@ class RegisterPageViewModel(
 
     if(email.isNotBlank() && validEmail && name.isNotBlank() && password.isNotBlank() && password.length > 8 && repeatPassword.isNotBlank() && repeatPassword == password) {
       _loading.value = true
-      GahoelChatApiService.register(email, password, name, {registerSuccess(it)}, {registerFail()})
+      viewModelScope.launch {
+        GahoelChatApiService.register(email, password, name, {registerSuccess(it)}, {registerFail()})
+      }
     }
 
     if(email.isBlank()) {

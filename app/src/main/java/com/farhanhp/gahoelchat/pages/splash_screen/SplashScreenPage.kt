@@ -1,7 +1,6 @@
 package com.farhanhp.gahoelchat.pages.splash_screen
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,18 +13,15 @@ import com.farhanhp.gahoelchat.MainActivity
 import com.farhanhp.gahoelchat.MainActivityViewModel
 import com.farhanhp.gahoelchat.MainActivityViewModelFactory
 import com.farhanhp.gahoelchat.R
-import com.farhanhp.gahoelchat.services.GahoelChatApiService
-import com.farhanhp.gahoelchat.classes.GetProfileResponse
 import com.farhanhp.gahoelchat.databinding.PageSplashScreenBinding
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
-import retrofit2.Response
 
 class SplashScreenPage : Fragment() {
   private lateinit var binding: PageSplashScreenBinding
   private lateinit var mainActivityModel: MainActivityViewModel
   private lateinit var mainActivityViewModelFactory: MainActivityViewModelFactory
   private lateinit var loadingTextView: TextView
+  private lateinit var viewModel: SplashScreenPageViewModel
+  private lateinit var viewModelFactory: SplashScreenPageViewModelFactory
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -35,30 +31,23 @@ class SplashScreenPage : Fragment() {
     loadingTextView = binding.loadingText
     mainActivityViewModelFactory = MainActivityViewModelFactory(requireActivity() as MainActivity)
     mainActivityModel = ViewModelProvider(requireActivity(), mainActivityViewModelFactory).get(MainActivityViewModel::class.java)
+    viewModelFactory = SplashScreenPageViewModelFactory({redirectToLoginPage()}, {redirectToHomePage()}, mainActivityModel.loginToken)
+    viewModel = ViewModelProvider(this, viewModelFactory).get(SplashScreenPageViewModel::class.java)
 
-    setLoadingTextViewText("Acquiring firebase register token...")
-    setFirebaseRegisterToken({
+    viewModel.loadingText.observe(viewLifecycleOwner) {
+      loadingTextView.text = it
+    }
+    viewModel.firebaseRegisterToken.observe(viewLifecycleOwner) {
       mainActivityModel.firebaseRegisterToken = it
-      setLoadingTextViewText("Checking login status...")
-      checkLoginStatus({
-        setLoadingTextViewText("Registering firebase register token to server")
-        registerFirebaseRegistrationToken({
-          redirectToHomePage()
-        }, {
-          setLoadingTextViewText("Fail to register firebase register token to server. Cannot enter app.")
-        })
-      }, {
-        redirectToLoginPage()
-      })
-    }) {
-      setLoadingTextViewText("Fail to acquire firebase register token. Cannot enter app.")
+    }
+    viewModel.loginToken.observe(viewLifecycleOwner) {
+      mainActivityModel.loginToken = it
+    }
+    viewModel.loginUser.observe(viewLifecycleOwner) {
+      mainActivityModel.loginUser = it
     }
 
     return binding.root
-  }
-
-  private fun setLoadingTextViewText(text: String) {
-    loadingTextView.text = text
   }
 
   private fun redirectToLoginPage() {
@@ -67,57 +56,5 @@ class SplashScreenPage : Fragment() {
 
   private fun redirectToHomePage() {
     findNavController().navigate(SplashScreenPageDirections.actionSplashScreenPageToAfterLoginPage())
-  }
-
-  private fun setFirebaseRegisterToken(
-      onSuccessCallback: (token: String)->Unit,
-      onFailCallback: ()->Unit
-    ) {
-      FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-        if (!task.isSuccessful) {
-          Log.w("FirebaseMessaging", "Fetching FCM registration token failed", task.exception)
-          onFailCallback()
-          return@OnCompleteListener
-        }
-
-        onSuccessCallback(task.result as String)
-      })
-  }
-
-  private fun checkLoginStatus(
-    onSuccessCallback: () -> Unit,
-    onFailCallback: () -> Unit,
-  ) {
-    fun success(response: Response<GetProfileResponse>) {
-      val code = response.code()
-
-      if (code == 200) {
-        mainActivityModel.loginUser = response.body()?.content
-        onSuccessCallback()
-      } else {
-        mainActivityModel.loginToken = null
-        onFailCallback()
-      }
-    }
-
-    val loginToken = mainActivityModel.loginToken
-
-    if(loginToken != null) {
-      GahoelChatApiService.getProfile(loginToken, {success(it)}, {onFailCallback()})
-    } else {
-      onFailCallback()
-    }
-  }
-
-  private fun registerFirebaseRegistrationToken(
-    onSuccessCallback: () -> Unit,
-    onFailCallback: () -> Unit,
-  ) {
-    val loginToken = mainActivityModel.loginToken
-    if(loginToken != null) {
-      GahoelChatApiService.registerFirebaseRegistrationToken(loginToken, {onSuccessCallback()}, {onFailCallback()})
-    } else {
-      onFailCallback()
-    }
   }
 }

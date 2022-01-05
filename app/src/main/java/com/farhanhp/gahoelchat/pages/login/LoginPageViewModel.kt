@@ -3,9 +3,11 @@ package com.farhanhp.gahoelchat.pages.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.farhanhp.gahoelchat.services.GahoelChatApiService
 import com.farhanhp.gahoelchat.classes.LoginResponse
 import com.farhanhp.gahoelchat.isValidEmail
+import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class LoginPageViewModel : ViewModel() {
@@ -63,7 +65,9 @@ class LoginPageViewModel : ViewModel() {
 
       if(isValidEmail) {
         _loading.value = true
-        GahoelChatApiService.login(email, password, firebaseRegisterToken, {loginSuccess(it)}, {loginFail()})
+        viewModelScope.launch {
+          GahoelChatApiService.login(email, password, firebaseRegisterToken, {loginSuccess(it)}, {loginFail()})
+        }
       } else {
         _emailError.value = true
         _emailMessage.value = "Invalid Email"

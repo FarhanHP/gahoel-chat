@@ -3,11 +3,13 @@ package com.farhanhp.gahoelchat.pages.after_login.chat_room
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.farhanhp.gahoelchat.classes.CreateMessageResponse
 import com.farhanhp.gahoelchat.classes.Message
 import com.farhanhp.gahoelchat.classes.Room
 import com.farhanhp.gahoelchat.classes.User
 import com.farhanhp.gahoelchat.services.GahoelChatApiService
+import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.util.*
 
@@ -30,7 +32,9 @@ class ChatRoomPageViewModel(
     tempMessageIds.add(0, tempMessageId)
     val tempMessage = Message(tempMessageId, messageBody, true, -1L)
     insertMessage(tempMessage)
-    GahoelChatApiService.createMessage(loginToken, messageBody, room._id, {}, {fail(tempMessageId)})
+    viewModelScope.launch {
+      GahoelChatApiService.createMessage(loginToken, messageBody, room._id, {}, {fail(tempMessageId)})
+    }
   }
 
   fun insertMessageByFCM(senderUserId: String, messageId: String, messageBody: String, createdAt: Long) {
