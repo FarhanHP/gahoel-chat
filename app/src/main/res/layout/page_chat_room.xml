@@ -41,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
+          android:maxHeight="100dp"
           android:layout_weight="1"
           android:id="@+id/messageInput"
           android:textSize="14sp"
