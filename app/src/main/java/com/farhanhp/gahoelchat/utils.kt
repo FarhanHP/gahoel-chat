@@ -15,5 +15,5 @@ fun toDateString(date: Date): String {
 
     return number.toString()
   }
-  return "${date.year + 1900}/${toNumberString(date.month)}/${toNumberString(date.date)} ${toNumberString(date.hours)}:${toNumberString(date.minutes)}"
+  return "${date.year + 1900}/${toNumberString(date.month + 1)}/${toNumberString(date.date)} ${toNumberString(date.hours)}:${toNumberString(date.minutes)}"
 }
